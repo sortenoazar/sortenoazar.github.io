@@ -6,31 +6,38 @@
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image-aframe.prod.js"></script>
     <script type="text/javascript">
-      var count1 = 1;
-      var count2 = 1;
-      var count3 = 1;
-      document.addEventListener("DOMContentLoaded", function() {
-        const slot1 = document.querySelector('#slot1');
-        setInterval(function () {
-          count1 += 1;
-          if (count1 == 100) count1 = 1; 
-          slot1.setAttribute("src","./video1/im ("+count1+").jpg");
-        },66); //modifique esse valor de 66 milissegundos para aumentar ou diminuir a velocidade do vídeo
+        var quantidade_videos = 3; //modifique este número de acordo com a quantidade de vídeos (pastas video1, video2, video3, video4 etc.)
+        
+        var sorteio = [];
+        sorteio.push(Math.ceil(Math.random() * quantidade_videos));
+        sorteio.push(Math.ceil(Math.random() * quantidade_videos));
+        sorteio.push(Math.ceil(Math.random() * quantidade_videos));
+        var count1 = 1;
+        var count2 = 1;
+        var count3 = 1;
 
-        const slot2 = document.querySelector('#slot2');
-        setInterval(function () {
-          count2 += 1;
-          if (count2 == 99) count2 = 1; 
-          slot2.setAttribute("src","./video2/im ("+count2+").jpg");
-        },66); //modifique esse valor de 66 milissegundos para aumentar ou diminuir a velocidade do vídeo
+        document.addEventListener("DOMContentLoaded", function() {
+            const slot1 = document.querySelector('#slot1');
+            setInterval(function () {
+                count1 += 1;
+                if (count1 == 100) count1 = 1; 
+                slot1.setAttribute("src","./video"+sorteio[0]+"/im ("+count1+").jpg");
+            },66); //modifique esse valor de 66 milissegundos para aumentar ou diminuir a velocidade do vídeo
 
-        const slot3 = document.querySelector('#slot3');
-        setInterval(function () {
-          count3 += 1;
-          if (count3 == 100) count3 = 1; 
-          slot3.setAttribute("src","./video3/im ("+count3+").jpg");
-        },66); //modifique esse valor de 66 milissegundos para aumentar ou diminuir a velocidade do vídeo
-      });
+            const slot2 = document.querySelector('#slot2');
+            setInterval(function () {
+                count2 += 1;
+                if (count2 == 99) count2 = 1; 
+                slot2.setAttribute("src","./video"+sorteio[1]+"/im ("+count2+").jpg");
+            },66); //modifique esse valor de 66 milissegundos para aumentar ou diminuir a velocidade do vídeo
+
+            const slot3 = document.querySelector('#slot3');
+            setInterval(function () {
+                count3 += 1;
+                if (count3 == 100) count3 = 1; 
+                slot3.setAttribute("src","./video"+sorteio[2]+"/im ("+count3+").jpg");
+            },66); //modifique esse valor de 66 milissegundos para aumentar ou diminuir a velocidade do vídeo
+        });
     </script>
 </head>
 <body>
@@ -41,9 +48,9 @@
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
     <a-entity mindar-image-target="targetIndex: 0">
-        <a-image id="slot1" src="./video1/img (1).jpg" opacity="1.0" position="-0.25 0 0" height="0.2" width="0.2" rotation="0 0 0"></a-image>
-        <a-image id="slot2" src="./video2/img (1).jpg" opacity="1.0" position="0 0 0" height="0.2" width="0.2" rotation="0 0 0"></a-image>
-        <a-image id="slot3" src="./video3/img (1).jpg" opacity="1.0" position="0.25 0 0" height="0.2" width="0.2" rotation="0 0 0"></a-image>
+        <a-image id="slot1" src="./video1/im (1).jpg" opacity="1.0" position="-0.25 0 0" height="0.2" width="0.2" rotation="0 0 0"></a-image>
+        <a-image id="slot2" src="./video2/im (1).jpg" opacity="1.0" position="0 0 0" height="0.2" width="0.2" rotation="0 0 0"></a-image>
+        <a-image id="slot3" src="./video3/im (1).jpg" opacity="1.0" position="0.25 0 0" height="0.2" width="0.2" rotation="0 0 0"></a-image>
     </a-entity>
     </a-scene>
 </body>
