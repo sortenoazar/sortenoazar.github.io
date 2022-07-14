@@ -6,48 +6,116 @@
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image-aframe.prod.js"></script>
     <script type="text/javascript">
-        var quantidade_videos = 3; //modifique este número de acordo com a quantidade de vídeos (pastas video1, video2, video3, video4 etc.)
+        var quantidade_videos = 3;
         
         var sorteio = [];
-        sorteio.push(Math.ceil(Math.random() * quantidade_videos));
-        sorteio.push(Math.ceil(Math.random() * quantidade_videos));
-        sorteio.push(Math.ceil(Math.random() * quantidade_videos));
         var count1 = 1;
         var count2 = 1;
         var count3 = 1;
+        
+        var rolling1 = true;
+        var rolling2 = true;
+        var rolling3 = true;
+
+        var rcount1;
+        var rcount2;
+        var rcount3;
+
+        var maxR1 = 51;
+        var maxR2 = 51;
+        var maxR3 = 51;
+
+        var interval1;
+        var interval2;
+        var interval3;
 
         document.addEventListener("DOMContentLoaded", function() {
+
+            const target = document.querySelector('#target');
             const slot1 = document.querySelector('#slot1');
-            setInterval(function () {
-                count1 += 1;
-                if (count1 == 100) count1 = 1; 
-                slot1.setAttribute("src","./video"+sorteio[0]+"/im ("+count1+").jpg");
-            },66); //modifique esse valor de 66 milissegundos para aumentar ou diminuir a velocidade do vídeo
-
             const slot2 = document.querySelector('#slot2');
-            setInterval(function () {
-                count2 += 1;
-                if (count2 == 99) count2 = 1; 
-                slot2.setAttribute("src","./video"+sorteio[1]+"/im ("+count2+").jpg");
-            },66); //modifique esse valor de 66 milissegundos para aumentar ou diminuir a velocidade do vídeo
-
             const slot3 = document.querySelector('#slot3');
-            setInterval(function () {
-                count3 += 1;
-                if (count3 == 100) count3 = 1; 
-                slot3.setAttribute("src","./video"+sorteio[2]+"/im ("+count3+").jpg");
-            },66); //modifique esse valor de 66 milissegundos para aumentar ou diminuir a velocidade do vídeo
+
+            target.addEventListener("targetFound", event => {
+                //realiza o sorteio toda vez que detecta
+                sorteio = [];
+                sorteio.push(Math.ceil(Math.random() * quantidade_videos));
+                sorteio.push(Math.ceil(Math.random() * quantidade_videos));
+                sorteio.push(Math.ceil(Math.random() * quantidade_videos));
+
+                rolling1 = true;
+                rolling2 = true;
+                rolling3 = true;
+
+                rcount1 = maxR1;
+                rcount2 = maxR2;
+                rcount3 = maxR3;
+
+                var reps2 = 1;
+                var reps3 = 1;
+
+                interval1 = setInterval(function () {
+                    if(rolling1) {
+                        slot1.setAttribute("src","./video"+sorteio[0]+"/rl ("+rcount1+").jpg");
+                        rcount1 -= 1;
+                        if(rcount1 == 0) rolling1 = false;
+                    } else {
+                        count1 += 1; 
+                        if (count1 == 100) count1 = 1;
+                        slot1.setAttribute("src","./video"+sorteio[0]+"/im ("+count1+").jpg");
+                    }
+                },66);
+
+                interval2 = setInterval(function () {
+                    if(rolling2) {
+                        slot2.setAttribute("src","./video"+sorteio[1]+"/rl ("+rcount2+").jpg");
+                        rcount2 -= 1;
+                        if(reps2 > 0 && rcount2 == 29) {
+                            rcount2 = maxR2;
+                            reps2 -= 1;
+                        }
+                        if(rcount2 == 0) rolling2 = false;
+                    } else {
+                        count2 += 1; 
+                        if (count2 == 99) count2 = 1;
+                        slot2.setAttribute("src","./video"+sorteio[1]+"/im ("+count2+").jpg");
+                    }
+                },66); //modifique esse valor de 66 milissegundos para aumentar ou diminuir a velocidade do vídeo
+
+                
+                interval3 = setInterval(function () {
+                    if(rolling3) {
+                        slot3.setAttribute("src","./video"+sorteio[2]+"/rl ("+rcount3+").jpg");
+                        rcount3 -= 1;
+                        if(reps3 > 0 && rcount3 == 46) {
+                            rcount3 = maxR3;
+                            reps3 -= 1;
+                        }
+                        if(rcount3 == 0) rolling3 = false;
+                    } else {
+                        count3 += 1; 
+                        if (count3 == 100) count3 = 1;
+                        slot3.setAttribute("src","./video"+sorteio[2]+"/im ("+count3+").jpg");
+                    }
+                },66); //modifique esse valor de 66 milissegundos para aumentar ou diminuir a velocidade do vídeo
+            });
+
+            target.addEventListener("targetLost", event => {
+                clearInterval(interval1);
+                clearInterval(interval2);
+                clearInterval(interval3);
+            });
         });
     </script>
 </head>
 <body>
-    <a-scene mindar-image="imageTargetSrc: targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-scene mindar-image="filterMinCF:0.0; filterBeta: 10000; imageTargetSrc: targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
     <a-assets>
         
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-    <a-entity mindar-image-target="targetIndex: 0">
+    <a-entity id="target" mindar-image-target="targetIndex: 0">
         <a-image id="slot1" src="./video1/im (1).jpg" opacity="1.0" position="-0.22 0.1 0" height="0.19" width="0.19" rotation="1 0 0"></a-image>
         <a-image id="slot2" src="./video2/im (1).jpg" opacity="1.0" position="-0.02 0.1 0" height="0.19" width="0.19" rotation="1 0 0"></a-image>
         <a-image id="slot3" src="./video3/im (1).jpg" opacity="1.0" position="0.18 0.1 0" height="0.19" width="0.19" rotation="1 0 0"></a-image>
