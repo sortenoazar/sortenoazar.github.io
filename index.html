@@ -9,9 +9,9 @@
         var quantidade_videos = 3;
         
         var sorteio = [];
-        var count1 = 1;
-        var count2 = 1;
-        var count3 = 1;
+        var count1;
+        var count2;
+        var count3;
         
         var rolling1 = true;
         var rolling2 = true;
@@ -33,24 +33,26 @@
             
             //carrega todas as imagens primeiro
             const hiddenImg = document.querySelector('#hiddenImg');
+            var imgs = "";
             for(i=1;i<=100;i++){
                 if(i<=51){
-                    hiddenImg.setAttribute("src","./video1/rl ("+i+").jpg");
+                    imgs += "<img id='roleta1_"+i+"' src='./video1/rl ("+i+").jpg' >";
                 }
-                hiddenImg.setAttribute("src","./video1/im ("+i+").jpg");
+                imgs += "<img id='video1_"+i+"' src='./video1/im ("+i+").jpg' >";
             }
             for(i=1;i<=99;i++){
                 if(i<=51){
-                    hiddenImg.setAttribute("src","./video2/rl ("+i+").jpg");
+                    imgs += "<img id='roleta2_"+i+"' src='./video2/rl ("+i+").jpg' >";
                 }
-                hiddenImg.setAttribute("src","./video2/im ("+i+").jpg");
+                imgs += "<img id='video2_"+i+"' src='./video2/im ("+i+").jpg' >";
             }
             for(i=1;i<=100;i++){
                 if(i<=52){
-                    hiddenImg.setAttribute("src","./video3/rl ("+i+").jpg");
+                    imgs += "<img id='roleta3_"+i+"' src='./video3/rl ("+i+").jpg' >";
                 }
-                hiddenImg.setAttribute("src","./video3/im ("+i+").jpg");
+                imgs += "<img id='video3_"+i+"' src='./video3/im ("+i+").jpg' >";
             }
+            hiddenImg.innerHTML = imgs;
 
             const target = document.querySelector('#target');
             const slot1 = document.querySelector('#slot1');
@@ -72,24 +74,28 @@
                 rcount2 = maxR2;
                 rcount3 = maxR3;
 
+                count1 = 100;
+                count2 = 99;
+                count3 = 100;
+
                 var reps2 = 1;
                 var reps3 = 1;
 
                 interval1 = setInterval(function () {
                     if(rolling1) {
-                        slot1.setAttribute("src","./video"+sorteio[0]+"/rl ("+rcount1+").jpg");
+                        slot1.setAttribute("src","#roleta"+sorteio[0]+"_"+rcount1);
                         rcount1 -= 1;
                         if(rcount1 == 0) rolling1 = false;
                     } else {
-                        count1 += 1; 
-                        if (count1 == 100) count1 = 1;
-                        slot1.setAttribute("src","./video"+sorteio[0]+"/im ("+count1+").jpg");
+                        count1 -= 1; 
+                        if (count1 == 0) count1 = 100;
+                        slot1.setAttribute("src","#video"+sorteio[0]+"_"+count1);
                     }
                 },66);
 
                 interval2 = setInterval(function () {
                     if(rolling2) {
-                        slot2.setAttribute("src","./video"+sorteio[1]+"/rl ("+rcount2+").jpg");
+                        slot2.setAttribute("src","#roleta"+sorteio[1]+"_"+rcount2);
                         rcount2 -= 1;
                         if(reps2 > 0 && rcount2 == 29) {
                             rcount2 = maxR2;
@@ -97,16 +103,16 @@
                         }
                         if(rcount2 == 0) rolling2 = false;
                     } else {
-                        count2 += 1; 
-                        if (count2 == 99) count2 = 1;
-                        slot2.setAttribute("src","./video"+sorteio[1]+"/im ("+count2+").jpg");
+                        count2 -= 1; 
+                        if (count2 == 0) count2 = 99;
+                        slot2.setAttribute("src","#video"+sorteio[1]+"_"+count2);
                     }
                 },66); //modifique esse valor de 66 milissegundos para aumentar ou diminuir a velocidade do vídeo
 
                 
                 interval3 = setInterval(function () {
                     if(rolling3) {
-                        slot3.setAttribute("src","./video"+sorteio[2]+"/rl ("+rcount3+").jpg");
+                        slot3.setAttribute("src","#roleta"+sorteio[2]+"_"+rcount3);
                         rcount3 -= 1;
                         if(reps3 > 0 && rcount3 == 46) {
                             rcount3 = maxR3;
@@ -114,9 +120,9 @@
                         }
                         if(rcount3 == 0) rolling3 = false;
                     } else {
-                        count3 += 1; 
-                        if (count3 == 100) count3 = 1;
-                        slot3.setAttribute("src","./video"+sorteio[2]+"/im ("+count3+").jpg");
+                        count3 -= 1; 
+                        if (count3 == 0) count3 = 100;
+                        slot3.setAttribute("src","#video"+sorteio[2]+"_"+count3);
                     }
                 },66); //modifique esse valor de 66 milissegundos para aumentar ou diminuir a velocidade do vídeo
             });
@@ -131,7 +137,7 @@
 </head>
 <body>
     <a-scene mindar-image="filterMinCF:0.0; filterBeta: 10000; imageTargetSrc: targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-    <a-assets>
+    <a-assets id="hiddenImg">
         
     </a-assets>
 
@@ -142,7 +148,5 @@
         <a-image id="slot3" src="./video3/im (1).jpg" opacity="1.0" position="0.18 0.1 0" height="0.19" width="0.19" rotation="1 0 0"></a-image>
     </a-entity>
     </a-scene>
-
-    <img id="hiddenImg" style="display:none" >
 </body>
 </html>
