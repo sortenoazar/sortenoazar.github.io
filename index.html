@@ -30,6 +30,27 @@
         var interval3;
 
         document.addEventListener("DOMContentLoaded", function() {
+            
+            //carrega todas as imagens primeiro
+            const hiddenImg = document.querySelector('#hiddenImg');
+            for(i=1;i<=100;i++){
+                if(i<=51){
+                    hiddenImg.setAttribute("src","./video1/rl ("+i+").jpg");
+                }
+                hiddenImg.setAttribute("src","./video1/im ("+i+").jpg");
+            }
+            for(i=1;i<=99;i++){
+                if(i<=51){
+                    hiddenImg.setAttribute("src","./video2/rl ("+i+").jpg");
+                }
+                hiddenImg.setAttribute("src","./video2/im ("+i+").jpg");
+            }
+            for(i=1;i<=100;i++){
+                if(i<=52){
+                    hiddenImg.setAttribute("src","./video3/rl ("+i+").jpg");
+                }
+                hiddenImg.setAttribute("src","./video3/im ("+i+").jpg");
+            }
 
             const target = document.querySelector('#target');
             const slot1 = document.querySelector('#slot1');
@@ -121,5 +142,7 @@
         <a-image id="slot3" src="./video3/im (1).jpg" opacity="1.0" position="0.18 0.1 0" height="0.19" width="0.19" rotation="1 0 0"></a-image>
     </a-entity>
     </a-scene>
+
+    <img id="hiddenImg" style="display:none" >
 </body>
 </html>
